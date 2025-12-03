@@ -5,6 +5,6 @@
 
 <h1 align="center">Infinite Stamina</h1>
 
-<h3 align="center">Press F9 to instantly restore all posse stamina to maximum. Press Shift+F10 to toggle infinite stamina mode in Frontier Legends.</h3>
+<h3 align="center">Press F9 to Instantly Restore all Posse members Stamina to the maximum. Press Shift+F10 to toggle Infinite Stamina mode.</h3>
 
 [![Requires BTD6 Mod Helper](https://raw.githubusercontent.com/gurrenm3/BTD-Mod-Helper/master/banner.png)](https://github.com/gurrenm3/BTD-Mod-Helper#readme)
