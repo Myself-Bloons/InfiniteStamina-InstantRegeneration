@@ -1,5 +1,6 @@
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api.ModOptions;
+using HarmonyLib;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using InfiniteStamina;
@@ -13,44 +14,30 @@ namespace InfiniteStamina;
 
 public class InfiniteStaminaMod : BloonsTD6Mod
 {
-    public static readonly ModSettingHotkey RestoreStaminaHotkey = new(KeyCode.F9)
-    {
-        displayName = "Restore Stamina",
-        description = "Press to instantly restore all posse stamina to maximum"
-    };
+    public static readonly ModSettingHotkey RestoreStamina = new(KeyCode.F9);
+    public static readonly ModSettingHotkey ToggleInfiniteStamina = new(KeyCode.F10, HotkeyModifier.Shift);
+    public static readonly ModSettingBool InfiniteStaminaEnabled = new(false) { button = true };
 
-    public static readonly ModSettingHotkey ToggleInfiniteHotkey = new(KeyCode.F10, HotkeyModifier.Shift)
+    [HarmonyPatch(typeof(FrontierMap), nameof(FrontierMap.Update))]
+    internal static class FrontierMap_Update
     {
-        displayName = "Toggle Infinite Stamina",
-        description = "Press Shift+F10 to toggle infinite stamina mode"
-    };
-
-    public static readonly ModSettingBool InfiniteStaminaEnabled = new(false)
-    {
-        displayName = "Infinite Stamina",
-        description = "When enabled, stamina never depletes",
-        button = true
-    };
-
-    public override void OnUpdate()
-    {
-        var manager = FrontierLegendsManager.instance;
-        if (manager == null) return;
-
-        if (RestoreStaminaHotkey.JustPressed())
+        [HarmonyPostfix]
+        internal static void Postfix()
         {
-            manager.HealPartyToPercent(1.0f);
-            manager.AddHomesteadStamina(9999f, 1.0f);
-        }
+            var manager = FrontierLegendsManager.instance;
+            if (manager is null) return;
 
-        if (ToggleInfiniteHotkey.JustPressed())
-        {
-            InfiniteStaminaEnabled.SetValueAndSave(!InfiniteStaminaEnabled);
-        }
+            if (RestoreStamina.JustPressed())
+            {
+                manager.HealPartyToPercent(1f);
+                manager.AddHomesteadStamina(9999f, 1f);
+            }
 
-        if (InfiniteStaminaEnabled && manager.Modifiers != null)
-        {
-            manager.Modifiers.staminaCost = 0f;
+            if (ToggleInfiniteStamina.JustPressed())
+                InfiniteStaminaEnabled.SetValue(!InfiniteStaminaEnabled);
+
+            if (InfiniteStaminaEnabled)
+                manager.Modifiers.staminaCost = 0f;
         }
     }
 }
