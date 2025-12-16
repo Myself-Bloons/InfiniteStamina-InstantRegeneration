@@ -2,8 +2,8 @@ namespace InfiniteStamina;
 
 public static class ModHelperData
 {
-    public const string WorksOnVersion = "52.1";
-    public const string Version = "1.0.0";
+    public const string WorksOnVersion = "52.2";
+    public const string Version = "1.1.0";
     public const string Name = "Infinite Stamina";
     public const string Description = "Provides hotkeys to restore and toggle infinite stamina in Frontier Legends.";
     public const string RepoOwner = "Myself-Bloons";
